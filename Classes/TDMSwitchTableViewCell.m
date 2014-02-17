@@ -84,7 +84,7 @@
 		self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self];
 		
 		self.collisionBehaviour = [[UICollisionBehavior alloc] initWithItems:@[self.contentView]];
-		[self.collisionBehaviour setTranslatesReferenceBoundsIntoBoundaryWithInsets:UIEdgeInsetsMake(0.5, 0.5, 0.5, -CGRectGetWidth(self.frame))];
+		[self.collisionBehaviour setTranslatesReferenceBoundsIntoBoundaryWithInsets:UIEdgeInsetsMake(0, 0, 0, -CGRectGetWidth(self.frame))];
 		//		CGPoint topLeft = self.contentView.frame.origin;
 		//		CGPoint bottomLeft = topLeft;
 		//		bottomLeft.y = CGRectGetMaxY(self.contentView.frame);
