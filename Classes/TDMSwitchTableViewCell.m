@@ -9,7 +9,7 @@
 #import "TDMSwitchTableViewCell.h"
 
 
-@interface TDMSwitchTableViewCell () <UICollisionBehaviorDelegate>
+@interface TDMSwitchTableViewCell () <UICollisionBehaviorDelegate, UIGestureRecognizerDelegate>
 
 @property (strong, nonatomic) UIView *switchView;
 @property (strong, nonatomic) NSLayoutConstraint *switchViewWidthConstraint;
@@ -20,6 +20,8 @@
 @property (strong, nonatomic) UIPushBehavior *pushBehaviour;
 @property (strong, nonatomic) UIDynamicItemBehavior *itemBehaviour;
 @property (assign, nonatomic) BOOL temporaryToggleOn;
+
+@property (strong, nonatomic) UITapGestureRecognizer *tap;
 
 @end
 
@@ -63,8 +65,9 @@
 		UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
 		[self addGestureRecognizer:pan];
 		
-		UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
-		[self addGestureRecognizer:tap];
+		_tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+		[self addGestureRecognizer:_tap];
+		_tap.delegate = self;
     }
     return self;
 }
@@ -192,18 +195,23 @@
 
 
 
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+	if (gestureRecognizer == self.tap)
+	{
+		CGPoint point = [gestureRecognizer locationInView:gestureRecognizer.view];
+		if (point.x > 44.0f)
+		{
+			return NO;
+		}
+	}
+	return YES;
+}
 
 - (void)handleTapGesture:(UITapGestureRecognizer *)gesture
 {
-	if (gesture.state == UIGestureRecognizerStateEnded)
-	{
-		CGPoint point = [gesture locationInView:gesture.view];
-		if (point.x < 44.0f)
-		{
-			self.pushBehaviour.pushDirection = CGVectorMake(10.0f, 0.0f);
-			self.pushBehaviour.active = YES;
-		}
-	}
+	self.pushBehaviour.pushDirection = CGVectorMake(10.0f, 0.0f);
+	self.pushBehaviour.active = YES;
 }
 
 
