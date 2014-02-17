@@ -1,5 +1,8 @@
 # TDMSwitchTableViewCell CHANGELOG
 
+## 0.1.4
+- Fix warnings
+
 ## 0.1.3
 - Fixed tableView:didSelectRowAtIndexPath: not being called
 
