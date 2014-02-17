@@ -92,31 +92,21 @@
 		//		bottomLeft.x = -0.5;
 		//		[self.collisionBehaviour addBoundaryWithIdentifier:@"leftEdge" fromPoint:topLeft toPoint:bottomLeft];
 		//		self.collisionBehaviour.collisionDelegate = self;
-		self.collisionBehaviour.action = ^{
-			NSLog(@"Collision");
-		};
 		[self.animator addBehavior:self.collisionBehaviour];
 		
 		self.gravityBehaviour = [[UIGravityBehavior alloc] initWithItems:@[self.contentView]];
 		self.gravityBehaviour.gravityDirection = CGVectorMake(-6.0f, 0.0f);
 		self.gravityBehaviour.action = ^{
 			[self updateSwitchViewWidth];
-			NSLog(@"Gravity");
 		};
 		[self.animator addBehavior:self.gravityBehaviour];
 		
 		self.pushBehaviour = [[UIPushBehavior alloc] initWithItems:@[self.contentView] mode:UIPushBehaviorModeInstantaneous];
-		self.pushBehaviour.action = ^{
-			NSLog(@"Push");
-		};
 		[self.animator addBehavior:self.pushBehaviour];
 		
 		self.itemBehaviour = [[UIDynamicItemBehavior alloc] initWithItems:@[self.contentView]];
 		self.itemBehaviour.elasticity = 0.45f;
 		self.itemBehaviour.allowsRotation = NO;
-		self.itemBehaviour.action = ^{
-			NSLog(@"Dynamic");
-		};
 		[self.animator addBehavior:self.itemBehaviour];
 	}
 }
@@ -249,7 +239,6 @@
 		if (frame.origin.x > 0) {
 			self.contentView.frame = frame;
 		}
-		NSLog(@"Center %f %f",frame.origin.x,translation.x);
 		[gesture setTranslation:CGPointZero inView:self];
 		
 		[self updateSwitchViewWidth];
@@ -267,7 +256,6 @@
 		
 		CGPoint velocity = [gesture velocityInView:self.contentView];
 		velocity.y = 0;
-		NSLog(@"Velocity, %f %f",velocity.x,velocity.y);
         [self.itemBehaviour addLinearVelocity:velocity forItem:self.contentView];
 		
 		self.temporaryToggleOn = NO;
@@ -275,12 +263,6 @@
 			self.on = !self.on;
 		}
     }
-}
-
-
--(void)collisionBehavior:(UICollisionBehavior *)behavior endedContactForItem:(id<UIDynamicItem>)item withBoundaryIdentifier:(id<NSCopying>)identifier
-{
-    NSLog(@"Collision detected %@",identifier);
 }
 
 @end
