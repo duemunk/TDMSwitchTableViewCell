@@ -65,50 +65,6 @@
 		
 		UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
 		[self addGestureRecognizer:tap];
-		
-		// Dynamics
-		self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self];
-		
-		self.collisionBehaviour = [[UICollisionBehavior alloc] initWithItems:@[self.contentView]];
-		[self.collisionBehaviour setTranslatesReferenceBoundsIntoBoundaryWithInsets:UIEdgeInsetsMake(0.5, 0.5, 0.5, -CGRectGetWidth(self.frame))];
-//		CGPoint topLeft = self.contentView.frame.origin;
-//		CGPoint bottomLeft = topLeft;
-//		bottomLeft.y = CGRectGetMaxY(self.contentView.frame);
-//		topLeft.x =
-//		bottomLeft.x = -0.5;
-//		[self.collisionBehaviour addBoundaryWithIdentifier:@"leftEdge" fromPoint:topLeft toPoint:bottomLeft];
-//		self.collisionBehaviour.collisionDelegate = self;
-		self.collisionBehaviour.action = ^{
-			NSLog(@"Collision");
-		};
-		[self.animator addBehavior:self.collisionBehaviour];
-		
-		self.gravityBehaviour = [[UIGravityBehavior alloc] initWithItems:@[self.contentView]];
-		self.gravityBehaviour.gravityDirection = CGVectorMake(-6.0f, 0.0f);
-		self.gravityBehaviour.action = ^{
-			[self updateSwitchViewWidth];
-			NSLog(@"Gravity");
-		};
-		[self.animator addBehavior:self.gravityBehaviour];
-
-		self.pushBehaviour = [[UIPushBehavior alloc] initWithItems:@[self.contentView] mode:UIPushBehaviorModeInstantaneous];
-		self.pushBehaviour.action = ^{
-			NSLog(@"Push");
-		};
-		[self.animator addBehavior:self.pushBehaviour];
-
-		self.itemBehaviour = [[UIDynamicItemBehavior alloc] initWithItems:@[self.contentView]];
-		self.itemBehaviour.elasticity = 0.45f;
-		self.itemBehaviour.allowsRotation = NO;
-		self.itemBehaviour.action = ^{
-			NSLog(@"Dynamic");
-		};
-		[self.animator addBehavior:self.itemBehaviour];
-		
-		
-//		self.contentView.layer.borderColor = [UIColor magentaColor].CGColor;
-//		self.contentView.layer.borderWidth = 1.0;
-		
     }
     return self;
 }
@@ -119,6 +75,40 @@
 
     // Configure the view for the selected state
 	[self.switchView bringSubviewToFront:self];
+}
+
+- (void)didMoveToSuperview
+{
+	if (!_animator) {
+		// Dynamics
+		self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self];
+		
+		self.collisionBehaviour = [[UICollisionBehavior alloc] initWithItems:@[self.contentView]];
+		[self.collisionBehaviour setTranslatesReferenceBoundsIntoBoundaryWithInsets:UIEdgeInsetsMake(0, 0, 0, -CGRectGetWidth(self.frame))];
+		//		CGPoint topLeft = self.contentView.frame.origin;
+		//		CGPoint bottomLeft = topLeft;
+		//		bottomLeft.y = CGRectGetMaxY(self.contentView.frame);
+		//		topLeft.x =
+		//		bottomLeft.x = -0.5;
+		//		[self.collisionBehaviour addBoundaryWithIdentifier:@"leftEdge" fromPoint:topLeft toPoint:bottomLeft];
+		//		self.collisionBehaviour.collisionDelegate = self;
+		[self.animator addBehavior:self.collisionBehaviour];
+		
+		self.gravityBehaviour = [[UIGravityBehavior alloc] initWithItems:@[self.contentView]];
+		self.gravityBehaviour.gravityDirection = CGVectorMake(-6.0f, 0.0f);
+		self.gravityBehaviour.action = ^{
+			[self updateSwitchViewWidth];
+		};
+		[self.animator addBehavior:self.gravityBehaviour];
+		
+		self.pushBehaviour = [[UIPushBehavior alloc] initWithItems:@[self.contentView] mode:UIPushBehaviorModeInstantaneous];
+		[self.animator addBehavior:self.pushBehaviour];
+		
+		self.itemBehaviour = [[UIDynamicItemBehavior alloc] initWithItems:@[self.contentView]];
+		self.itemBehaviour.elasticity = 0.45f;
+		self.itemBehaviour.allowsRotation = NO;
+		[self.animator addBehavior:self.itemBehaviour];
+	}
 }
 
 
@@ -249,7 +239,6 @@
 		if (frame.origin.x > 0) {
 			self.contentView.frame = frame;
 		}
-		NSLog(@"Center %f %f",frame.origin.x,translation.x);
 		[gesture setTranslation:CGPointZero inView:self];
 		
 		[self updateSwitchViewWidth];
@@ -267,7 +256,6 @@
 		
 		CGPoint velocity = [gesture velocityInView:self.contentView];
 		velocity.y = 0;
-		NSLog(@"Velocity, %f %f",velocity.x,velocity.y);
         [self.itemBehaviour addLinearVelocity:velocity forItem:self.contentView];
 		
 		self.temporaryToggleOn = NO;
@@ -275,12 +263,6 @@
 			self.on = !self.on;
 		}
     }
-}
-
-
--(void)collisionBehavior:(UICollisionBehavior *)behavior endedContactForItem:(id<UIDynamicItem>)item withBoundaryIdentifier:(id<NSCopying>)identifier
-{
-    NSLog(@"Collision detected %@",identifier);
 }
 
 @end
