@@ -1,0 +1,8 @@
+platform :ios, '7.0' 
+
+target "TDMSwitchTableViewCell Example" do
+	pod "TDMSwitchTableViewCell", :path => "../TDMSwitchTableViewCell.podspec"
+end
+
+target "TDMSwitchTableViewCell ExampleTests" do
+end

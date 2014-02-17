@@ -1,0 +1,14 @@
+PODS:
+  - TDMSwitchTableViewCell (0.0.1)
+
+DEPENDENCIES:
+  - TDMSwitchTableViewCell (from `../TDMSwitchTableViewCell.podspec`)
+
+EXTERNAL SOURCES:
+  TDMSwitchTableViewCell:
+    :path: ../TDMSwitchTableViewCell.podspec
+
+SPEC CHECKSUMS:
+  TDMSwitchTableViewCell: a8fdff23d192c3a234e469f4c983b335998b70e2
+
+COCOAPODS: 0.29.0
