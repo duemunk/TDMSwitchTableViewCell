@@ -101,8 +101,9 @@
 		
 		self.gravityBehaviour = [[UIGravityBehavior alloc] initWithItems:@[self.contentView]];
 		self.gravityBehaviour.gravityDirection = CGVectorMake(-6.0f, 0.0f);
+		__block TDMSwitchTableViewCell *__self = self;
 		self.gravityBehaviour.action = ^{
-			[self updateSwitchViewWidth];
+			[__self updateSwitchViewWidth];
 		};
 		[self.animator addBehavior:self.gravityBehaviour];
 		
