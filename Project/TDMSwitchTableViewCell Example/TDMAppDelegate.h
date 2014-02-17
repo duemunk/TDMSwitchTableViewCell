@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 developmunk. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
 @interface TDMAppDelegate : UIResponder <UIApplicationDelegate>
 
