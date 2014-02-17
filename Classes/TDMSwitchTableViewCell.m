@@ -77,8 +77,10 @@
 	[self.switchView bringSubviewToFront:self];
 }
 
-- (void)didMoveToSuperview
+- (void)layoutSubviews
 {
+	[super layoutSubviews];
+	
 	if (!_animator) {
 		// Dynamics
 		self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self];
