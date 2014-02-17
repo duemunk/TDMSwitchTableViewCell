@@ -1,5 +1,8 @@
 # TDMSwitchTableViewCell CHANGELOG
 
+## 0.1.3
+- Fixed tableView:didSelectRowAtIndexPath: not being called
+
 ## 0.1.2
 - Fixed issue when using UIKit Dynamics on contentView and AutoLayout on UITableView
 

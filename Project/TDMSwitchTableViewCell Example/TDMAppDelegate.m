@@ -200,6 +200,13 @@
 	[self configureCell:cell];
 }
 
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	NSLog(@"Did select row %ld",(long)indexPath.row);
+}
+
 
 @end
 
