@@ -65,19 +65,33 @@
 		
 		UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
 		[self addGestureRecognizer:tap];
-		
+    }
+    return self;
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+	[self.switchView bringSubviewToFront:self];
+}
+
+- (void)didMoveToSuperview
+{
+	if (!_animator) {
 		// Dynamics
 		self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self];
 		
 		self.collisionBehaviour = [[UICollisionBehavior alloc] initWithItems:@[self.contentView]];
 		[self.collisionBehaviour setTranslatesReferenceBoundsIntoBoundaryWithInsets:UIEdgeInsetsMake(0.5, 0.5, 0.5, -CGRectGetWidth(self.frame))];
-//		CGPoint topLeft = self.contentView.frame.origin;
-//		CGPoint bottomLeft = topLeft;
-//		bottomLeft.y = CGRectGetMaxY(self.contentView.frame);
-//		topLeft.x =
-//		bottomLeft.x = -0.5;
-//		[self.collisionBehaviour addBoundaryWithIdentifier:@"leftEdge" fromPoint:topLeft toPoint:bottomLeft];
-//		self.collisionBehaviour.collisionDelegate = self;
+		//		CGPoint topLeft = self.contentView.frame.origin;
+		//		CGPoint bottomLeft = topLeft;
+		//		bottomLeft.y = CGRectGetMaxY(self.contentView.frame);
+		//		topLeft.x =
+		//		bottomLeft.x = -0.5;
+		//		[self.collisionBehaviour addBoundaryWithIdentifier:@"leftEdge" fromPoint:topLeft toPoint:bottomLeft];
+		//		self.collisionBehaviour.collisionDelegate = self;
 		self.collisionBehaviour.action = ^{
 			NSLog(@"Collision");
 		};
@@ -90,13 +104,13 @@
 			NSLog(@"Gravity");
 		};
 		[self.animator addBehavior:self.gravityBehaviour];
-
+		
 		self.pushBehaviour = [[UIPushBehavior alloc] initWithItems:@[self.contentView] mode:UIPushBehaviorModeInstantaneous];
 		self.pushBehaviour.action = ^{
 			NSLog(@"Push");
 		};
 		[self.animator addBehavior:self.pushBehaviour];
-
+		
 		self.itemBehaviour = [[UIDynamicItemBehavior alloc] initWithItems:@[self.contentView]];
 		self.itemBehaviour.elasticity = 0.45f;
 		self.itemBehaviour.allowsRotation = NO;
@@ -104,21 +118,7 @@
 			NSLog(@"Dynamic");
 		};
 		[self.animator addBehavior:self.itemBehaviour];
-		
-		
-//		self.contentView.layer.borderColor = [UIColor magentaColor].CGColor;
-//		self.contentView.layer.borderWidth = 1.0;
-		
-    }
-    return self;
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-	[self.switchView bringSubviewToFront:self];
+	}
 }
 
 
